@@ -1,52 +1,58 @@
-from src.visualization.grid_visualizer import visualize
 import random
-from src.visualization.grid_visualizer import visualize
 from src.environment.grid_world import create_grid, add_obstacles
-from src.perception.environment_analyzer import analyze_environment
-from src.agent.planner_selector import choose_planner
 from src.agent.agent import run_agent
-
-
-WIDTH = random.choice([10, 15, 20, 30])
-HEIGHT = WIDTH
-
-DENSITY = random.uniform(0.05, 0.4)
-
-START = (0, 0)
-GOAL = (WIDTH - 1, HEIGHT - 1)
-
+from src.visualization.grid_visualizer import visualize
 
 def main():
+    # ---------------------------
+    # 1. Randomized Environment
+    # ---------------------------
+    WIDTH = random.choice([10, 15, 20, 25, 30])
+    HEIGHT = WIDTH
+    DENSITY = random.uniform(0.05, 0.4)
 
-    print("\n--- Creating Environment ---")
+    START = (0, 0)
+    GOAL = (WIDTH - 1, HEIGHT - 1)
 
+    print("\n--- Creating Grid Environment ---")
     graph = create_grid(WIDTH, HEIGHT)
     graph = add_obstacles(graph, WIDTH, HEIGHT, DENSITY, START, GOAL)
-    env = analyze_environment(WIDTH, HEIGHT, DENSITY, START, GOAL)
 
-    print("\n--- Environment Analysis ---")
+    # ---------------------------
+    # 2. Run Agent (perception → planning → action)
+    # ---------------------------
+    path, planner_name = run_agent(graph, START, GOAL)
 
-    for key, value in env.items():
-        print(f"{key}: {value}")
-
-    planner = choose_planner(env)
-
+    # ---------------------------
+    # 3. Output Results
+    # ---------------------------
     print("\n--- Planner Selected ---")
-    print(planner)
-
-    path = run_agent(graph, START, GOAL, planner)
+    print(planner_name)
 
     if path:
-
         print("\n--- Path Found ---")
         print("Path length:", len(path))
         print("Path:", path)
-        visualize(graph, WIDTH, HEIGHT, path, START, GOAL)
-        
-
     else:
+        print("\nNo path found.")
 
-        print("\nNo path found")
+    # ---------------------------
+    # 4. Visualization
+    # ---------------------------
+    # Compute obstacle list for visualization
+    all_nodes = set((x, y) for x in range(WIDTH) for y in range(HEIGHT))
+    obstacles = list(all_nodes - set(graph.nodes))
+
+    visualize(
+        graph,
+        WIDTH,
+        HEIGHT,
+        path,
+        START,
+        GOAL,
+        obstacles=obstacles,
+        delay=0.6
+    )
 
 
 if __name__ == "__main__":
