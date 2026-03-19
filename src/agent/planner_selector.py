@@ -1,6 +1,3 @@
-import random
-
-
 def choose_planner(env):
 
     size = env["grid_size"]

@@ -3,7 +3,9 @@ from src.environment.grid_world import create_grid, add_obstacles
 from src.agent.agent import run_agent
 from src.visualization.grid_visualizer import visualize
 
+
 def main():
+
     # ---------------------------
     # 1. Randomized Environment
     # ---------------------------
@@ -15,31 +17,30 @@ def main():
     GOAL = (WIDTH - 1, HEIGHT - 1)
 
     print("\n--- Creating Grid Environment ---")
+
     graph = create_grid(WIDTH, HEIGHT)
     graph = add_obstacles(graph, WIDTH, HEIGHT, DENSITY, START, GOAL)
 
     # ---------------------------
-    # 2. Run Agent (perception → planning → action)
+    # 2. Run Agent
     # ---------------------------
     path, planner_name = run_agent(graph, START, GOAL)
 
     # ---------------------------
-    # 3. Output Results
+    # 3. Output
     # ---------------------------
-    print("\n--- Planner Selected ---")
+    print("\n--- Final Planner Used ---")
     print(planner_name)
 
     if path:
         print("\n--- Path Found ---")
         print("Path length:", len(path))
-        print("Path:", path)
     else:
         print("\nNo path found.")
 
     # ---------------------------
     # 4. Visualization
     # ---------------------------
-    # Compute obstacle list for visualization
     all_nodes = set((x, y) for x in range(WIDTH) for y in range(HEIGHT))
     obstacles = list(all_nodes - set(graph.nodes))
 
@@ -51,7 +52,7 @@ def main():
         START,
         GOAL,
         obstacles=obstacles,
-        delay=0.6
+        delay=0.5
     )
 
 
