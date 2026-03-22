@@ -3,7 +3,10 @@ from src.environment.grid_world import create_grid, add_obstacles
 from src.agent.agent import run_agent
 from src.visualization.grid_visualizer import visualize
 
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 def main():
 
     # ---------------------------

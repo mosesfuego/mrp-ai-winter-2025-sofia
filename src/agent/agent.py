@@ -2,6 +2,10 @@ from src.perception.environment_analyzer import analyze_environment
 from src.agent.planner_selector import choose_planner
 from src.agent.tool_caller import call_tool
 from src.agent.llm_planner import choose_planner_with_llm
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 def run_agent(graph, start, goal):

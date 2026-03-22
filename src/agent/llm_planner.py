@@ -2,6 +2,10 @@ from openai import OpenAI
 import os
 import traceback
 # NVIDIA NIM (OpenAI-compatible)
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 client = OpenAI(
     api_key=os.environ.get("NIM_API_KEY"),
     base_url="https://integrate.api.nvidia.com/v1"
@@ -43,7 +47,7 @@ def choose_planner_with_llm(env_features):
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": build_user_prompt(env_features)}
             ],
-            max_tokens=500,   # slightly higher
+            max_tokens=200,   # slightly higher
             temperature=0
         )
 
